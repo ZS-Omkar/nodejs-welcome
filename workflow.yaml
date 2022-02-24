@@ -1,0 +1,33 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Workflow
+metadata:
+  generateName: nodejs-welcome
+  labels:
+    workflows.argoproj.io/archive-strategy: "false"
+spec:
+  entrypoint: build
+  serviceAccountName: argo
+  volumes:
+    - name: kaniko-secret
+      secret:
+        secretName: regcred
+        items:
+          - key: .dockerconfigjson
+            path: config.json
+  templates:
+    - name: build
+      dag:
+        tasks:
+          - name: build-container-image
+            templateRef:
+              name: container-image
+              template: build-kaniko-git
+              clusterScope: true
+            arguments:
+               parameters:
+                 - name: app_repo
+                   value: git://github.com/ZS-Omkar/nodejs-welcome.git
+                 - name: container_image
+                   value: omkar5655/kaniko
+                 - name: container_tag
+                   value: "1.1.0"
