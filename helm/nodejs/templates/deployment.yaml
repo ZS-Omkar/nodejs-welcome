@@ -37,6 +37,7 @@ spec:
             - name: http
               containerPort: 80
               protocol: TCP
+<<<<<<< HEAD
             livenessProbe:
             httpGet:
               path: /
@@ -45,6 +46,16 @@ spec:
             httpGet:
               path: /
               port: http
+=======
+#           livenessProbe:
+#             httpGet:
+#               path: /
+#               port: http
+#           readinessProbe:
+#             httpGet:
+#               path: /
+#               port: http
+>>>>>>> 6d3c183dc25cb1b839ddba90fa25d6ddcfba2e3f
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
       {{- with .Values.nodeSelector }}
